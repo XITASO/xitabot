@@ -57,3 +57,6 @@ typings/
 # dotenv environment variables file
 .env
 
+# xitabot
+credentials.js
+tweet.json
