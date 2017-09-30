@@ -2,7 +2,7 @@ module.exports = {
 
   getNewTweets: function (name) {
     var that = this;
-    return this.getTweets('xitasogmbh').then(function (tweets) {
+    return this.getTweets(name).then(function (tweets) {
       tweets = that.sortByDate(tweets);
 
       var latestTweetDate = that.getLatestTweetDate();
