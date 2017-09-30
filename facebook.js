@@ -48,10 +48,10 @@ module.exports = {
             posts = posthelper.sortByDate(posts, self.date_field);
 
             var latestPostDate = posthelper.getLatestPostDate(self.channel);
-            posthelper.saveLatestTweetDate(Math.max(new Date(posts[0][self.date_field]), latestPostDate));
+            posthelper.saveLatestPostDate(self.channel, Math.max(new Date(posts[0][self.date_field]), latestPostDate));
 
             var newPosts = posthelper.getNewPosts(posts, latestPostDate, self.date_field);
-            
+
             return newPosts;
         });
     }
