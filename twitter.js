@@ -1,30 +1,19 @@
 module.exports = {
+  channel: "facebook",
+  date_field: "created_time",
 
   getNewTweets: function (name) {
     var that = this;
+    var posthelper = require("./posthelper.js");
     return this.getTweets(name).then(function (tweets) {
-      tweets = that.sortByDate(tweets);
+      tweets = posthelper.sortByDate(tweets, that.date_field);
 
-      var latestTweetDate = that.getLatestTweetDate();
-      that.saveLatestTweetDate(Math.max(new Date(tweets[0].created_at), latestTweetDate));
+      var latestTweetDate = posthelper.getLatestPostDate(that.channel);
+      posthelper.saveLatestPostDate(Math.max(new Date(tweets[0][that.date_field]), latestTweetDate));
 
-      var newTweets = tweets.filter(function (tweet) { return new Date(tweet.created_at) > latestTweetDate });
+      var newTweets = posthelper.getNewPosts(tweets, latestTweetDate, that.date_field);
       return newTweets;
     });
-  },
-
-  getLatestTweetDate: function () {
-    var fs = require('fs');
-    var fileContent = fs.readFileSync('tweet.json');
-    return new Date(JSON.parse(fileContent).latestTweetDate);
-  },
-
-  saveLatestTweetDate: function (tweetDate) {
-    var json = JSON.stringify({
-      latestTweetDate: tweetDate
-    });
-    var fs = require('fs');
-    return fs.writeFile('tweet.json', json);
   },
 
   getTweets: function (name) {
@@ -32,11 +21,5 @@ module.exports = {
     var credentials = require('./credentials.js');
     var client = new Twitter(credentials.twitter);
     return client.get('statuses/user_timeline', { screen_name: name });
-  },
-
-  sortByDate: function (tweets) {
-    return tweets.sort(function sortByCreatedAt(first, second) {
-      return new Date(second.created_at) - new Date(first.created_at);
-    });
   }
 };

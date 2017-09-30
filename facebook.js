@@ -1,4 +1,7 @@
 module.exports = {
+    channel: "facebook",
+    date_field: "created_time",
+
     getApi: function () {
         var FB = require("facebook-node");
         FB.setApiVersion("v2.2");
@@ -24,7 +27,7 @@ module.exports = {
         });
     },
 
-    getTweets: function (api) {
+    getPosts: function (api) {
         return new Promise(function (resolve, reject) {
             api.api('/XitasoGmbH/feed', function (res) {
                 if (!res || res.error) {
@@ -34,6 +37,22 @@ module.exports = {
 
                 resolve(res.data);
             });
+        });
+    },
+
+    getNewPosts: function (api) {
+        var self = this;
+
+        var posthelper = require("./posthelper.js");
+        return this.getPosts(api).then(function (posts) {
+            posts = posthelper.sortByDate(posts, self.date_field);
+
+            var latestPostDate = posthelper.getLatestPostDate(self.channel);
+            posthelper.saveLatestTweetDate(Math.max(new Date(posts[0][self.date_field]), latestPostDate));
+
+            var newPosts = posthelper.getNewPosts(posts, latestPostDate, self.date_field);
+            
+            return newPosts;
         });
     }
 }
