@@ -58,5 +58,4 @@ typings/
 .env
 
 # xitabot
-credentials.js
 tweet.json

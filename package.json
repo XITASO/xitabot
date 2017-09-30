@@ -1,7 +1,12 @@
 {
   "name": "xitabot",
+  "description": "A teams bot that forwards tweets and fb posts.",
   "version": "0.0.1",
+  "license": "MIT",
   "dependencies": {
     "twitter": "^1.7.1"
+  },
+  "scripts": {
+    "start": "node twitter-bot.js"
   }
 }
