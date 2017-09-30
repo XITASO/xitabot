@@ -2,6 +2,7 @@
   "name": "xitabot",
   "version": "0.0.1",
   "dependencies": {
+    "facebook-node": "0.0.3",
     "twitter": "^1.7.1"
   }
 }
