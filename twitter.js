@@ -1,6 +1,6 @@
 module.exports = {
-  channel: "facebook",
-  date_field: "created_time",
+  channel: "twitter",
+  date_field: "created_at",
 
   getNewTweets: function (name) {
     var that = this;
@@ -9,7 +9,7 @@ module.exports = {
       tweets = posthelper.sortByDate(tweets, that.date_field);
 
       var latestTweetDate = posthelper.getLatestPostDate(that.channel);
-      posthelper.saveLatestPostDate(Math.max(new Date(tweets[0][that.date_field]), latestTweetDate));
+      posthelper.saveLatestPostDate(that.channel, Math.max(new Date(tweets[0][that.date_field]), latestTweetDate));
 
       var newTweets = posthelper.getNewPosts(tweets, latestTweetDate, that.date_field);
       return newTweets;
